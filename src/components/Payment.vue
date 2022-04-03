@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch, toRefs } from 'vue'
 
-  // const itemName1 = ref<string>('たろう')
-  const itemName2 = '麒麟'
-
-  // const price1 = 20000
-  const price2 = 50000
   const item1 = reactive({
     name: '権左ぶろう',
     price: 400000
   })
-
+  const itemName2 = '麒麟'
+  const price2 = 50000
   const url1 = "https://tech-masao.com/"
 
   const buy = (itemName:string) => {
@@ -24,11 +20,13 @@ import { ref, reactive, computed } from 'vue'
 
   const budget = 50000
 
-  const priceLabel = computed(() => {
-    if (item1.price > budget) {
-      return '高すぎるだろふつうに'
+  const priceLabel = ref<string>(item1.price +  ' yen')
+  const { price } = toRefs(item1)
+  watch (price, () => {
+    if (price.value > budget) {
+      priceLabel.value =  '高すぎるだろふつうに'
     } else {
-      return item1.price + 'yen'
+      priceLabel.value = price.value + 'yen'
     }
   })
 </script>
